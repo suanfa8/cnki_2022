@@ -33,3 +33,8 @@ time.sleep(5)
     #         a.click()
     #         break
 ```
+
+
+```python
+pip3 install openpyxl
+```
