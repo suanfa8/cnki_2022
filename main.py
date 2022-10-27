@@ -118,7 +118,7 @@ if __name__ == '__main__':
     current_page = 1
     index = 1
     while True:
-        print('爬第 ' + str(current_page) + ' 页的内容')
+
         rows = driver.find_elements(By.XPATH, '//*[@id="gridTable"]/table/tbody/tr')
 
         # 爬取具体的网页内容 begin
@@ -129,7 +129,8 @@ if __name__ == '__main__':
             article_url = row.find_element(By.CSS_SELECTOR, "td.name > a")
             article_url.click()
 
-            driver.switch_to.window(driver.window_handles[-1])
+            current_window = driver.window_handles[-1]
+            driver.switch_to.window(current_window)
 
             print("爬取文章页面的一些信息")
             # 1 标题
@@ -183,14 +184,24 @@ if __name__ == '__main__':
                 if '分类号：' == key:
                     item['category_no'] = value
 
+            driver.find_element(By.XPATH, '//*[@id="DownLoadParts"]/div[1]/ul/li[2]/a').click()
+            # 跳转到「文章详情」页面
+            driver.switch_to.window(driver.window_handles[-1])
+
+            content = driver.find_elements(By.CSS_SELECTOR, "div.content > div.p1,div.content > h3")
+            content_text = '\n'.join([c.text for c in content])
+
+            item['content'] = content_text
+            driver.close()
             time.sleep(2)
 
+            driver.switch_to.window(current_window)
             driver.close()
             print("爬取完成以后关闭")
             driver.switch_to.window(search_homepage)
             df = pd.concat([df, pd.Series(item).to_frame().T], ignore_index=True)
 
-            if index == 8:
+            if index == 3:
                 break
 
         # 爬取具体的网页内容 end
