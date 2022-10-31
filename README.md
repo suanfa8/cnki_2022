@@ -1,3 +1,14 @@
+## 下一步做什么
+
+- 继续爬取
+
+## 安装依赖
+
+```python
+pip3 install -r requirements.txt
+```
+
+
 ## 旧版项目
 
 - 地址：[https://gitee.com/minge8/cnki](https://gitee.com/minge8/cnki)
